@@ -1,0 +1,19 @@
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+# Set up credentials
+scope = ['https://www.googleapis.com/auth/spreadsheets']
+creds = ServiceAccountCredentials.from_json_keyfile_name('creds.json', scope)
+client = gspread.authorize(creds)
+
+# Read input sheets
+input_sheet1 = client.open('Input Sheet 1').sheet1
+input_sheet2 = client.open('Input Sheet 2').sheet1
+
+# Create output sheets
+output_sheet1 = client.create('Output Sheet 1')
+output_sheet2 = client.create('Output Sheet 2')
+
+# Read data from input sheets and write to output sheets
+output_sheet1.update(input_sheet1.get_all_values())
+output_sheet2.update(input_sheet2.get_all_values())
